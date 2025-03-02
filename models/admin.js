@@ -1,7 +1,7 @@
-const mangoose = require('mongoose');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const adminSchema = new mangoose.Schema({
+const adminSchema = new mongoose.Schema({
     email:{type:String, required:true, unique:true},
     password:{type:String,required :true}
 });
@@ -14,5 +14,5 @@ adminSchema.pre('save',async function(next){
     next();
     });
 
-    const Admin = mangoose.model('Admin',adminSchema);
+    const Admin = mongoose.model('Admin',adminSchema);
     module.exports = Admin;

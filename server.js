@@ -1,33 +1,31 @@
-const express = required("express");
+const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-const cors = required("cors");
-
-const adminRoutes = required("./routes/adminRoutes");
-
-
-dotenv.config();
+const dotenv = require("dotenv").config(); // Correct way for CommonJS
+const cors = require("cors");
+const adminRoutes = require("./routes/adminRoutes");
 
 const app = express();
-//middleware
-app.user(cors());
-app.user(express.json());
+const PORT = process.env.PORT || 5000;
 
-//routes 
-app.use("/admin",adminRoutes);
+// Middleware
+app.use(express.json()); // Parse JSON
+app.use(cors()); // Enable CORS
 
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrLpasrser:true,
-    useUnifiedTopology:true,})
-    .then(()=>console.log("connected to mongoDB"))
-    .catch((err)=>console.log(err));
+// Connect to MongoDB Atlas
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.error("MongoDB Connection Error:", err));
 
-app.get("/",(req,res)=>{
-    res.send("welcome to admin panel");
+// Routes
+app.use("/api/admin", adminRoutes);
+
+// Default route
+app.get("/", (req, res) => {
+  res.send("Survey Form Backend is Running...");
 });
 
-const PORT =process.env.PORT
-
-app.listen(PORT,()=>{
-    console.log(`server is running on port ${PORT}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv").config(); // Correct way for CommonJS
 const cors = require("cors");
 const adminRoutes = require("./routes/adminRoutes");
+const surveyRoutes = require("./routes/surveyRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,7 @@ mongoose
 
 // Routes
 app.use("/api/admin", adminRoutes);
+app.use("/api/survey",surveyRoutes);
 
 // Default route
 app.get("/", (req, res) => {

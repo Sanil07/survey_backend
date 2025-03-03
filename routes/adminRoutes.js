@@ -1,7 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin.js");
-const authMiddleware = require("../middleware/authMiddleware.js");
+
 const bcrypt = require("bcrypt");
 const router = express.Router();
 
@@ -34,11 +34,11 @@ router.post("/login",async (req ,res)=>{
 
         }
         const isMatch = await bcrypt.compare(password,admin.password);
-    if (isMatch){
-        return res.status(400).json({message:"invalid bcrypt"});
+    if (!isMatch){
+        return res.status(400).json({message:"Invalid password"});
 
     }
-    const token = jwt.sign({id:admin.id,email:admin}, "12345678",{expiresIn:"1h"});
+    const token = jwt.sign({id:admin.id,email:admin.email}, "12345678",{expiresIn:"1h"});
     res.status(200).json({token, "message":"login successful"});
 
     }

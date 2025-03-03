@@ -4,10 +4,10 @@ const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware.js");
 
 
-router.post("/survey ",async (req,res)=>{
+router.post("/survey",async (req,res)=>{
  try{
     const{name, gender, nationality, email, countryCode, phoneNumber, address, message}=req.body;
-    if (!name || !gender || !national || !email || !countryCode || !phoneNumber){
+    if (!name || !gender || !nationality || !email || !countryCode || !phoneNumber){
       return res.status(400).json({message:"All fields are required"});
     }
     if(!email.match(/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/)){
@@ -35,11 +35,11 @@ router.post("/survey ",async (req,res)=>{
     res.status(201).json({message:"Survey created successfully"});
  }
  catch(error){
-    res.status(500).json({message:"Server error",error});
+    res.status(500).json({message:"Server error",error:error.message});
  }
 })
 
-router.get("/survey ",authMiddleware,async (req,res)=>{
+router.get("/survey",authMiddleware,async (req,res)=>{
    try{
       const surveys =await Survey.find();
       res.status(200).json(surveys);
